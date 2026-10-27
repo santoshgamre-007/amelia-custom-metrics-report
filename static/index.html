@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SoundHound | Amelia Custom Metrics Report</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header><div class="logo">S</div><div><div class="t"><b>SoundHound</b> <span>|</span> Amelia Custom Metrics Report</div><div class="s">Conversations in. Dashboard and PowerPoint out.</div></div><div class="chips"><span class="pill" id="ver"></span><span class="pill wait" id="conn">not connected</span></div></header>
+<div class="layout">
+<nav><a data-go="1" class="on"><i>1</i><b>Get the conversations</b><small>From Amelia, or from a file</small></a><a data-go="2"><i>2</i><b>Your report</b><small>Dashboard, PowerPoint, data</small></a><a href="/transcript.html" target="_blank" style="cursor:pointer"><i>↗</i><b>Check a transcript</b><small>Read any call in the report</small></a></nav>
+<main>
+<section id="step-1">
+  <h1>Where do the conversations come from?</h1>
+  <p class="lead">The app reads each conversation and its transcript, maps everything to the customer’s custom-metrics dictionary, and builds the dashboard and the PowerPoint.</p>
+  <div class="card"><h2>A · From Amelia</h2>
+    <div class="grid2"><label>Amelia address<input id="c-url" placeholder="https://your-host/Amelia"></label>
+      <label>Sign in with<select id="c-mode"><option value="password">User name and password</option><option value="cookie">Browser session cookie (SSO)</option></select></label></div>
+    <div class="grid2" id="pw-fields"><label>User name<input id="c-user" autocomplete="username"></label><label>Password<input id="c-pass" type="password" autocomplete="current-password"></label></div>
+    <div id="ck-fields" hidden><label>Session cookie<input id="c-cookie" placeholder="amelia_s=…"></label><p class="hint">Sign in to the console in your browser, then copy <b>amelia_s</b> from that same host (F12 → Application → Cookies).</p></div>
+    <div class="row"><button class="btn primary" id="b-connect">Connect</button><span id="c-msg" class="msg"></span></div>
+    <div id="after" hidden><hr>
+      <div class="grid3"><label>Domain<select id="p-domain"></select></label><label>From<input type="date" id="p-from"></label><label>To<input type="date" id="p-to"></label></div>
+      <div class="grid2"><label>Customer name <small>(on the report)</small><input id="p-customer"></label><label>Report title <small>(optional)</small><input id="p-title" placeholder="from the dictionary"></label></div>
+      <div class="row"><button class="btn primary" id="b-generate">Generate the report →</button></div></div></div>
+  <div class="card"><h2>B · Or use an exported file</h2><p class="hint">In the Amelia console: Conversations → Export (include transcripts). Any .csv, .zip or .gz export works.</p>
+    <div class="grid2"><label>Export file<input type="file" id="f-file" accept=".csv,.zip,.gz,text/csv"></label><label>Customer name<input id="f-customer"></label></div>
+    <div class="row"><button class="btn" id="b-upload">Build the report from this file →</button></div></div>
+  <div id="err1" class="err" hidden></div>
+</section>
+<section id="step-2" hidden>
+  <h1>Your report</h1><pre id="log" class="log"></pre><div id="err2" class="err" hidden></div>
+  <div id="result" hidden>
+    <div class="card"><div class="dl"><h2>Download</h2><div><a class="btn primary" id="d-dash" target="_blank">Open the dashboard</a> <a class="btn primary" id="d-pptx" download>Download the PowerPoint</a> <a class="btn" id="d-csv" download>Per-conversation data (CSV)</a></div></div>
+      <p class="hint">The dashboard is one file: email it, open it offline, or print it to PDF. The PowerPoint is built from the customer’s own template, with the same numbers.</p></div>
+    <div class="kpis" id="kpis"></div>
+    <iframe id="frame" title="Dashboard"></iframe>
+  </div>
+  <div class="row"><button class="btn" id="b-back">← Change the source</button></div>
+  <div class="card"><h2>Earlier reports</h2><table id="reports"><tbody></tbody></table></div>
+</section>
+</main></div>
+<script src="app.js"></script></body></html>

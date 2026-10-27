@@ -1,0 +1,21 @@
+{
+  "_note": "Rules the transcript analysis uses for this domain. Each 're' is a case-insensitive regular expression tested against the caller's own words (and 'intents' against the recorded Matched Caller Intent). The first matching reason wins, so keep specific ones first.",
+  "customer": "Penn State Health",
+  "header": "Penn State Health + Experis + SoundHound",
+  "timeLabel": "ET",
+  "callingReasons": [
+    { "key": "cerner", "label": "Cerner, PowerChart, FirstNet or Revenue Cycle", "re": "cerner|power ?chart|first ?net|revenue cycle|fast ?pass|millennium", "notContained": "Cerner, PowerChart, FirstNet or Revenue Cycle not opening: no self-service path, so transferred" },
+    { "key": "authenticator", "label": "Authenticator on a phone", "re": "authenticator|\\bmfa\\b|multi.?factor|2fa|two.?factor|verification code|new (phone|device)", "intents": "mfa|authenticator", "notContained": "Authenticator: steps or link did not resolve it for the caller" },
+    { "key": "remote", "label": "Remote access (Remote Access Portal, VPN, Citrix)", "re": "remote access|\\bvpn\\b|citrix|remote desktop|\\brap\\b|from home", "intents": "remote|rap", "notContained": "Remote access: steps or link did not resolve it for the caller" },
+    { "key": "email", "label": "Email and mobile apps (Outlook, Smart Square, TigerConnect)", "re": "outlook|e-?mail|smart ?square|tiger ?connect|teams", "intents": "smart ?square|outlook|email", "notContained": "Email and mobile apps: no self-service path, so transferred" },
+    { "key": "password", "label": "Locked out, password or sign-in problem", "re": "locked|lock(ed)? out|password|passcode|sign ?in|log ?in|login|can.?t get in|disabled|blocked|expired|reset", "intents": "password", "notContained": "Locked out or cannot log in: qualifying questions did not lead to a fix" },
+    { "key": "other_it", "label": "Other hospital IT requests (devices, printers, onboarding, lab)", "re": "\\btv\\b|television|printer|copier|fax|pager|armband|monitor|badge|onboard|new hire|access request|\\blab\\b|imaging|radiology|scanner", "notContained": "Topic Amelia does not support" },
+    { "key": "computer", "label": "Computer, Wi-Fi or app problems", "re": "computer|laptop|\\bpc\\b|wi-?fi|internet|network|restart|reboot|slow|freez|frozen|browser|chrome|edge|cache|cookie|taskbar|screen|keyboard|mouse|\\bapp\\b|software|install", "intents": "chrome|cache|browser|computer", "notContained": "Computer, Wi-Fi or app problems: self-service steps did not work for the caller" }
+  ],
+  "kbTitles": {
+    "KB0023618": "Reset Your Penn State Health Password / Requirements",
+    "KB0023388": "How to enroll a New Device - Microsoft Authenticator",
+    "KB0024688": "Restarting Computer Instead of Shutting Down",
+    "KB0024440": "How do I access Smart Square on my mobile device"
+  }
+}

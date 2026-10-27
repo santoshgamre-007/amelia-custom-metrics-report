@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Transcript | SoundHound Amelia Custom Metrics Report</title>
+<style>:root{--bg:#f6f4fa;--card:#fff;--ink:#241a3f;--mut:#6b6485;--line:#e3deef;--br:#5b2fb5;--am:#efe9fb;--ca:#e6f0ff}
+@media(prefers-color-scheme:dark){:root{--bg:#171326;--card:#211b36;--ink:#eee9fb;--mut:#a79fc2;--line:#383054;--br:#a88af0;--am:#2d2450;--ca:#1d3050}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,sans-serif}.w{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:20px;margin:6px 0 2px}.s{color:var(--mut);font-size:13px;margin-bottom:14px}.row{display:flex;gap:8px;flex-wrap:wrap}input{flex:1;min-width:220px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+button,.chip{padding:9px 14px;border:0;border-radius:8px;background:var(--br);color:#fff;font:inherit;font-weight:600;cursor:pointer}.chip{padding:4px 9px;font-size:12px;background:var(--am);color:var(--ink);border:1px solid var(--line);font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:14px}.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.meta div span{display:block;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.t{display:flex;gap:10px;margin:8px 0}.t b{min-width:62px;font-size:12px;padding-top:3px}.t i{font-style:normal;color:var(--mut);font-size:11px;min-width:56px;padding-top:4px}.t p{margin:0;padding:7px 10px;border-radius:10px;background:var(--am);flex:1}.t.c p{background:var(--ca)}
+.err{color:#b3261e;margin-top:12px}.hint{color:var(--mut);font-size:13px}.sug{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}</style></head><body><div class="w">
+<h1>Check a transcript</h1><div class="s">SoundHound | Amelia Custom Metrics Report · read straight from the export used for your latest report. Held in memory on this computer only.</div>
+<div class="row"><input id="id" placeholder="Conversation id, e.g. NBM5JUVKQBYAA" autofocus><button id="go">Show transcript</button></div><div id="sug" class="sug"></div><div id="out"></div></div>
+<script>
+const $=(i)=>document.getElementById(i),esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const yn=(v)=>v===true?'Yes':v===false?'No':'–',mm=(s)=>s==null?'–':Math.floor(s/60)+':'+String(Math.round(s%60)).padStart(2,'0');
+async function load(id){$('id').value=id||$('id').value;const r=await (await fetch('/api/transcript?id='+encodeURIComponent($('id').value))).json();
+ $('sug').innerHTML=(r.suggestions||[]).map((x)=>`<a class="chip" href="#" data-id="${esc(x.id)}">${esc(x.id)} · ${esc(x.outcome)}</a>`).join('');
+ document.querySelectorAll('.chip').forEach((a)=>a.onclick=(e)=>{e.preventDefault();load(a.dataset.id)});
+ if(!r.found){$('out').innerHTML=r.message||r.reason==='no-id'?`<p class="hint">${esc(r.message||'Pick an abandoned or escalated call above, or type an id.')}</p>`:'';return}
+ $('out').innerHTML=`<div class="card"><div class="meta"><div><span>Conversation</span>${esc(r.id)}</div><div><span>Outcome in report</span>${esc(r.outcome)} (recorded: ${esc(r.recorded)})</div><div><span>Started</span>${esc(r.when)} · ${esc(r.channel)}</div><div><span>Handle time</span>${mm(r.handleSec)}</div><div><span>Closed by</span>${esc(r.closedBy||'–')}</div><div><span>Platform resolution</span>${esc(r.resolution||'–')}</div><div><span>Escalated</span>${yn(r.escalated)}</div><div><span>Agent answered</span>${yn(r.agentHandled)}</div><div><span>Left while waiting for agent</span>${yn(r.escalateAbandoned)}</div></div></div>
+ <div class="card">${r.turns.length?r.turns.map((t)=>`<div class="t ${t.who==='amelia'?'a':'c'}"><b>${t.label}</b><i>${t.time}</i><p>${esc(t.text)}</p></div>`).join(''):'<p class="hint">This conversation has no transcript in the export.</p>'}</div>`}
+$('go').onclick=()=>load();$('id').onkeydown=(e)=>{if(e.key==='Enter')load()};load(new URLSearchParams(location.search).get('id')||'');
+</script></body></html>

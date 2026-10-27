@@ -1,0 +1,28 @@
+# Copy to config.yaml. Everything here is optional — you can also type it into the page.
+server:
+  port: 8740
+reports_dir: reports
+dictionaries_dir: dictionaries      # one workbook per domain: dictionaries/<domain code>.xlsx  (+ <domain code>.taxonomy.json for the transcript rules)
+powerpoint: true                    # also write the PowerPoint
+# template: templates/report_template.pptx   # the PowerPoint template (your own deck)
+
+connection:
+  base_url: https://your-host/Amelia
+  auth_mode: password               # password | session_cookie
+  username: ""
+  password: ""                      # or set AMELIA_USER / AMELIA_PASSWORD
+  session_cookie: ""                # amelia_s=…  (for SSO instances: copy it from the browser after signing in)
+
+defaults:
+  customer: Penn State Health
+  timezone: America/New_York        # the time zone the export is requested in
+  time_label: ET                    # shown after the dates in the report
+  domain: pennstatehealth
+  days: 7
+
+# Calls you have reviewed and want counted as contained, whatever the platform recorded (conversation ids).
+contained_calls: []
+#  - NBM5JUVKQBYAA
+
+# Workbook to use when a domain has no <domain>.xlsx of its own (file name in the dictionaries folder).
+default_dictionary: pennstatehealth.xlsx
