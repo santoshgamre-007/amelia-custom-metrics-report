@@ -14,7 +14,7 @@ function applyConnected(info) {
 }
 async function init() {
   S.state = await api('/api/state'); $('ver').textContent = 'v' + S.state.version; const d = S.state.defaults;
-  $('c-url').value = S.state.baseUrl || ''; $('c-mode').value = S.state.authMode === 'session_cookie' ? 'cookie' : 'password'; $('p-customer').value = $('f-customer').value = d.customer || '';
+  const mem = (k) => { try { return localStorage.getItem('amc.' + k) || ''; } catch (_) { return ''; } }; $('c-url').value = S.state.baseUrl || mem('url'); $('c-user').value = mem('user'); $('c-mode').value = S.state.authMode === 'session_cookie' ? 'cookie' : 'password'; $('p-customer').value = $('f-customer').value = d.customer || '';
   const to = new Date(Date.now() - 864e5); $('p-to').value = ymd(to); $('p-from').value = ymd(new Date(to.getTime() - ((d.days || 7) - 1) * 864e5)); modeSwitch();
   if (S.state.connected) applyConnected({ user: S.state.user, domains: S.state.domains, version: '' });
   else if (S.state.configured) { try { $('c-msg').textContent = 'Signing in with the saved settings…'; applyConnected(await api('/api/connect', { method: 'POST', json: {} })); } catch (e) { $('c-msg').className = 'msg'; $('c-msg').textContent = ''; err('err1', 'The saved sign-in did not work: ' + e.message); } }
@@ -26,7 +26,7 @@ document.querySelectorAll('nav a').forEach((a) => a.addEventListener('click', ()
 $('b-back').addEventListener('click', () => show(1));
 $('b-connect').addEventListener('click', async () => {
   err('err1'); $('b-connect').disabled = true; $('c-msg').className = 'msg'; $('c-msg').textContent = 'Connecting…';
-  try { applyConnected(await api('/api/connect', { method: 'POST', json: { baseUrl: $('c-url').value, mode: $('c-mode').value, username: $('c-user').value, password: $('c-pass').value, cookie: $('c-cookie').value } })); } catch (e) { $('c-msg').textContent = ''; err('err1', e.message); }
+  try { applyConnected(await api('/api/connect', { method: 'POST', json: { baseUrl: $('c-url').value, mode: $('c-mode').value, username: $('c-user').value, password: $('c-pass').value, cookie: $('c-cookie').value } })); try { localStorage.setItem('amc.url', $('c-url').value); localStorage.setItem('amc.user', $('c-user').value); } catch (_) { /* address and user name only, never the password */ } } catch (e) { $('c-msg').textContent = ''; err('err1', e.message); }
   $('b-connect').disabled = false;
 });
 async function follow(jobId) {

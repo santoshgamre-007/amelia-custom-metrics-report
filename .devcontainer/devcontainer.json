@@ -1,16 +1,10 @@
 {
   "name": "SoundHound | Amelia Custom Metrics Report",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
-  "postCreateCommand": "npm install && [ -f config.yaml ] || cp config.example.yaml config.yaml",
+  "postCreateCommand": "npm install",
   "postAttachCommand": "npm start",
   "forwardPorts": [8740],
   "portsAttributes": {
     "8740": { "label": "Amelia Custom Metrics Report", "onAutoForward": "openBrowser", "visibility": "private" }
-  },
-  "secrets": {
-    "AMELIA_URL": { "description": "Amelia address, e.g. https://your-host/Amelia" },
-    "AMELIA_USER": { "description": "Your own Amelia console user name (leave empty when using a session cookie)" },
-    "AMELIA_PASSWORD": { "description": "Your own Amelia console password" }
-  },
-  "customizations": { "vscode": { "settings": { "files.exclude": { "node_modules": true } } } }
+  }
 }

@@ -49,6 +49,7 @@ Transcripts are read in memory and reduced to signals; the caller's words, name,
 ## Running it in GitHub Codespaces
 
 1. On the repository page: **Code → Codespaces → Create codespace on main** (needs Write access to the repository).
-2. Before the first start, add your own Amelia details as Codespaces secrets (GitHub → Settings → Codespaces → Secrets, give this repository access): `AMELIA_URL`, `AMELIA_USER`, `AMELIA_PASSWORD`. Or leave them out and type them into the app.
-3. The app starts by itself and opens in the browser. Keep the forwarded port **Private** (never Public): it has no sign-in of its own.
-4. Reports and transcripts are held in the codespace. When you finish, **delete the codespace** (github.com/codespaces) so the data goes with it.
+2. The app installs and starts by itself and opens in the browser. No `config.yaml` is needed.
+3. On the first screen type the Amelia address and your own Amelia sign-in, then pick the domain and dates. The password is typed into the page each time and is never written to a file. The address and user name are remembered in your browser for next time.
+4. Keep the forwarded port **Private** (never Public): the app has no sign-in of its own.
+5. When you finish, delete the codespace (github.com/codespaces) so the reports and transcripts go with it.
