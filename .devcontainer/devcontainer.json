@@ -2,9 +2,9 @@
   "name": "SoundHound | Amelia Custom Metrics Report",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
   "postCreateCommand": "npm install",
-  "postAttachCommand": "npm start",
+  "postAttachCommand": "sh scripts/codespace-start.sh",
   "forwardPorts": [8740],
   "portsAttributes": {
-    "8740": { "label": "Amelia Custom Metrics Report", "onAutoForward": "openBrowser", "visibility": "private" }
+    "8740": { "label": "Amelia Custom Metrics Report", "onAutoForward": "openBrowser" }
   }
 }

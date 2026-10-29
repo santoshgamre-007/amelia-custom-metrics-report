@@ -18,6 +18,20 @@ People open the link, type an **access code**, then sign in to **Amelia with the
 
 Always serve it over **https** (Render and Azure do this for you). Change the access code whenever someone leaves the team.
 
+
+## Option 0 — No card, no server: share a GitHub Codespace link
+Costs nothing within a personal GitHub account's free monthly Codespaces allowance (no payment card). Colleagues need **no GitHub account**.
+
+1. In GitHub: your profile picture → **Settings → Codespaces → Secrets → New secret**. Create two secrets and give each access to the `amelia-custom-metrics-report` repository:
+   - `ACCESS_CODE`: a random code of 16+ characters (this is what you give colleagues).
+   - `ALLOWED_AMELIA_HOSTS`: your Amelia host name only, e.g. `amelia.yourcompany.com`.
+2. On the repository page: **Code → Codespaces → Create codespace on main**. The app starts in hosted mode and makes port 8740 **Public**. The terminal prints the link to share (`https://<name>-8740.app.github.dev`). If it says to do it by hand: **Ports** tab → right-click 8740 → **Port Visibility → Public**.
+3. Send colleagues the link, and the access code separately. They enter the code and then sign in to Amelia with their own account.
+4. **Keep it running:** a codespace stops after 30 idle minutes (raise it under Settings → Codespaces → Default idle timeout, up to 4 hours) and the link then stops working until you start it again from github.com/codespaces. The link stays the same for the same codespace.
+5. When you are done: delete the codespace (github.com/codespaces). That removes every report in it.
+
+Limits: it only works while your codespace runs, so it suits team sessions, not an always-on service. Company policy may disable public ports. Transcripts are held in GitHub's cloud while it runs, so get approval for that.
+
 ## Option 1 — Render (simplest, about 10 minutes)
 1. Sign up at render.com and choose **New → Blueprint**. Connect your GitHub account and pick the `amelia-custom-metrics-report` repository (it reads `render.yaml`).
 2. When it asks, enter `ACCESS_CODE` and `ALLOWED_AMELIA_HOSTS`.

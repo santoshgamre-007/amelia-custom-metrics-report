@@ -1,6 +1,6 @@
 {
   "name": "amelia-custom-metrics",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "SoundHound | Amelia Custom Metrics Report — pulls conversations from Amelia, reads the transcripts, maps everything to the customer's custom-metrics dictionary, and produces a dashboard and a PowerPoint in the customer's template.",
   "main": "server.js",
   "scripts": { "start": "node server.js", "test": "node tests/run.js", "report": "node cli.js" },
