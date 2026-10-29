@@ -1,0 +1,7 @@
+node_modules
+reports
+config.yaml
+.git
+*.csv
+*.zip
+.devcontainer

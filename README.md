@@ -1,4 +1,6 @@
-# SoundHound | Amelia Custom Metrics Report 
+# SoundHound | Amelia Custom Metrics Report
+
+**New here? See [QUICKSTART.md](QUICKSTART.md)**: no GitHub account needed. Download the ZIP, install Node.js, double-click *Start Custom Metrics Report.bat*. 
 
 Pulls a domain's conversations from Amelia (or reads an export file), **reads every transcript**, maps everything to the customer's **custom-metrics dictionary**, and produces:
 
@@ -39,6 +41,9 @@ Transcripts are read in memory and reduced to signals; the caller's words, name,
 
 ## Tests
 `npm test` — 72 checks on a synthetic dataset with known answers: the CSV, dictionary and transcript readers, every rule above, the ten tiles and the handle times, the PowerPoint (slides, numbers, charts and their "Edit Data" workbooks, package soundness), the Amelia connection against a pretend console that enforces the real console's header rules, the server, and the command line.
+
+## Hosting it as one link
+See [DEPLOY.md](DEPLOY.md): access code, a private workspace per person, Docker/Render/Azure steps.
 
 ## Sharing this repository
 

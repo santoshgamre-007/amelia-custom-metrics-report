@@ -1,0 +1,12 @@
+# One-click deploy on Render (render.com): New → Blueprint → pick this repository.
+services:
+  - type: web
+    name: amelia-custom-metrics
+    runtime: docker
+    plan: starter            # 512 MB+; reports are built in memory, so avoid the smallest free tier for big exports
+    healthCheckPath: /healthz
+    envVars:
+      - { key: HOSTED, value: "1" }
+      - { key: IDLE_MINUTES, value: "45" }
+      - { key: ACCESS_CODE, sync: false }            # you type this in the Render dashboard
+      - { key: ALLOWED_AMELIA_HOSTS, sync: false }   # e.g. pennstatehealth.example.com (comma separated)

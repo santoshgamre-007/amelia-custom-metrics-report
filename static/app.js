@@ -1,7 +1,7 @@
 'use strict';
 const $ = (id) => document.getElementById(id); const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const S = { state: null };
-async function api(path, opts = {}) { const r = await fetch(path, { ...opts, headers: { ...(opts.json ? { 'Content-Type': 'application/json' } : {}), ...(opts.headers || {}) }, body: opts.json ? JSON.stringify(opts.json) : opts.body }); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`); return j; }
+async function api(path, opts = {}) { const r = await fetch(path, { ...opts, headers: { ...(opts.json ? { 'Content-Type': 'application/json' } : {}), ...(opts.headers || {}) }, body: opts.json ? JSON.stringify(opts.json) : opts.body }); const j = await r.json().catch(() => ({})); if (r.status === 401 && j.locked) { location.href = '/login'; throw new Error(j.error); } if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`); return j; }
 const show = (n) => { $('step-1').hidden = n !== 1; $('step-2').hidden = n !== 2; document.querySelectorAll('nav a').forEach((a) => a.classList.toggle('on', +a.dataset.go === n)); };
 const err = (id, m) => { $(id).hidden = !m; $(id).textContent = m || ''; };
 const ymd = (d) => d.toISOString().slice(0, 10);
@@ -13,7 +13,8 @@ function applyConnected(info) {
   $('c-msg').className = 'msg ok'; $('c-msg').textContent = `Signed in as ${info.user}${info.version ? ` · Amelia ${info.version}` : ''} · ${info.domains.length} domain(s)`;
 }
 async function init() {
-  S.state = await api('/api/state'); $('ver').textContent = 'v' + S.state.version; const d = S.state.defaults;
+  S.state = await api('/api/state'); $('ver').textContent = 'v' + S.state.version;
+  if (S.state.hosted) { const b = document.createElement('button'); b.className = 'btn'; b.textContent = 'Sign out and delete my data'; b.style.marginLeft = '8px'; b.onclick = async () => { await api('/api/logout', { method: 'POST' }); location.href = '/login'; }; document.querySelector('.chips').appendChild(b); } const d = S.state.defaults;
   const mem = (k) => { try { return localStorage.getItem('amc.' + k) || ''; } catch (_) { return ''; } }; $('c-url').value = S.state.baseUrl || mem('url'); $('c-user').value = mem('user'); $('c-mode').value = S.state.authMode === 'session_cookie' ? 'cookie' : 'password'; $('p-customer').value = $('f-customer').value = d.customer || '';
   const to = new Date(Date.now() - 864e5); $('p-to').value = ymd(to); $('p-from').value = ymd(new Date(to.getTime() - ((d.days || 7) - 1) * 864e5)); modeSwitch();
   if (S.state.connected) applyConnected({ user: S.state.user, domains: S.state.domains, version: '' });
